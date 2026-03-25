@@ -15,7 +15,7 @@ class food:
 
     def draw(self):
         food_rect = pygame.Rect(self.position.x * cell_size, self.position.y * cell_size, cell_size, cell_size)
-        pygame.draw.ellipse(screen, (200, 40, 40), food_rect)
+        screen.blit(food_surface, food_rect)
 
     def generate_random_position(self):
         x = random.randint(0, number_of_cells -1)
