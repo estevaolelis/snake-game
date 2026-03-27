@@ -6,7 +6,7 @@ class Cobra:
         self.corpo = [Vector2(6, 9), Vector2(5, 9), Vector2(4, 9)]
         self.direcao = Vector2(1, 0)
         self.adicionar_segmento = False
-        self.som_comer = pygame.mixer.Sound("Sounds/eat.mp3")
+        self.som_comer = pygame.mixer.Sound("Sounds/PowerUp2.wav")
         self.som_bater_parede = pygame.mixer.Sound("Sounds/wall.mp3")
 
     def desenhar(self, screen, deslocamento, tamanho_celula, cor):
