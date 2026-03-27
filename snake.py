@@ -3,145 +3,178 @@ from pygame.math import Vector2
 
 pygame.init()
 
-title_font = pygame.font.Font(None, 60)
-score_font = pygame.font.Font(None, 40)
+fonte_titulo = pygame.font.Font(None, 60)
+fonte_pontuacao = pygame.font.Font(None, 40)
 
-GREEN = (173, 204, 96)
-DARK_GREEN = (43, 51, 24)
+# Cores
+VERDE = (173, 204, 96)
+VERDE_ESCURO = (43, 51, 24)
 
-cell_size = 30
-number_of_cells = 25
+# Tamanho de cada quadrado no grid
+tamanho_celula = 30
+numero_de_celulas = 25
 
-OFFSET = 75
+# Espaçamento da borda
+DESLOCAMENTO = 75
 
-class Food:
-	def __init__(self, snake_body):
-		self.position = self.generate_random_pos(snake_body)
+# Classe responsável por tudo da comida
+class Comida:
+	def __init__(self, corpo_cobra):
+		self.posicao = self.gerar_posicao_aleatoria(corpo_cobra)
 
-	def draw(self):
-		food_rect = pygame.Rect(OFFSET + self.position.x * cell_size, OFFSET + self.position.y * cell_size, 
-			cell_size, cell_size)
-		screen.blit(food_surface, food_rect)
+	def desenhar(self):
+		retangulo_comida = pygame.Rect(
+			DESLOCAMENTO + self.posicao.x * tamanho_celula,
+			DESLOCAMENTO + self.posicao.y * tamanho_celula,
+			tamanho_celula,
+			tamanho_celula
+		)
+		screen.blit(superficie_comida, retangulo_comida)
 
-	def generate_random_cell(self):
-		x = random.randint(0, number_of_cells-1)
-		y = random.randint(0, number_of_cells-1)
+	def gerar_celula_aleatoria(self):
+		x = random.randint(0, numero_de_celulas - 1)
+		y = random.randint(0, numero_de_celulas - 1)
 		return Vector2(x, y)
 
-	def generate_random_pos(self, snake_body):
-		position = self.generate_random_cell()
-		while position in snake_body:
-			position = self.generate_random_cell()
-		return position
+	def gerar_posicao_aleatoria(self, corpo_cobra):
+		posicao = self.gerar_celula_aleatoria()
+		while posicao in corpo_cobra:
+			posicao = self.gerar_celula_aleatoria()
+		return posicao
 
-class Snake:
+# Classe responsável por tudo da cobra
+class Cobra:
 	def __init__(self):
-		self.body = [Vector2(6, 9), Vector2(5,9), Vector2(4,9)]
-		self.direction = Vector2(1, 0)
-		self.add_segment = False
-		self.eat_sound = pygame.mixer.Sound("Sounds/eat.mp3")
-		self.wall_hit_sound = pygame.mixer.Sound("Sounds/wall.mp3")
+		self.corpo = [Vector2(6, 9), Vector2(5, 9), Vector2(4, 9)]
+		self.direcao = Vector2(1, 0)
+		self.adicionar_segmento = False
+		self.som_comer = pygame.mixer.Sound("Sounds/eat.mp3")
+		self.som_bater_parede = pygame.mixer.Sound("Sounds/wall.mp3")
 
-	def draw(self):
-		for segment in self.body:
-			segment_rect = (OFFSET + segment.x * cell_size, OFFSET+ segment.y * cell_size, cell_size, cell_size)
-			pygame.draw.rect(screen, DARK_GREEN, segment_rect, 0, 7)
+	def desenhar(self):
+		for segmento in self.corpo:
+			retangulo_segmento = (
+				DESLOCAMENTO + segmento.x * tamanho_celula,
+				DESLOCAMENTO + segmento.y * tamanho_celula,
+				tamanho_celula,
+				tamanho_celula
+			)
+			pygame.draw.rect(screen, VERDE_ESCURO, retangulo_segmento, 0, 7)
 
-	def update(self):
-		self.body.insert(0, self.body[0] + self.direction)
-		if self.add_segment == True:
-			self.add_segment = False
+	def atualizar(self):
+		self.corpo.insert(0, self.corpo[0] + self.direcao)
+		if self.adicionar_segmento == True:
+			self.adicionar_segmento = False
 		else:
-			self.body = self.body[:-1]
+			self.corpo = self.corpo[:-1]
 
-	def reset(self):
-		self.body = [Vector2(6,9), Vector2(5,9), Vector2(4,9)]
-		self.direction = Vector2(1, 0)
+	def resetar(self):
+		self.corpo = [Vector2(6, 9), Vector2(5, 9), Vector2(4, 9)]
+		self.direcao = Vector2(1, 0)
 
-class Game:
+# Classe de validações do jogo
+class Jogo:
 	def __init__(self):
-		self.snake = Snake()
-		self.food = Food(self.snake.body)
-		self.state = "RUNNING"
-		self.score = 0
+		self.cobra = Cobra()
+		self.comida = Comida(self.cobra.corpo)
+		self.estado = "RODANDO"
+		self.pontuacao = 0
 
-	def draw(self):
-		self.food.draw()
-		self.snake.draw()
+	def desenhar(self):
+		self.comida.desenhar()
+		self.cobra.desenhar()
 
-	def update(self):
-		if self.state == "RUNNING":
-			self.snake.update()
-			self.check_collision_with_food()
-			self.check_collision_with_edges()
-			self.check_collision_with_tail()
+	def atualizar(self):
+		if self.estado == "RODANDO":
+			self.cobra.atualizar()
+			self.verificar_colisao_com_comida()
+			self.verificar_colisao_com_bordas()
+			self.verificar_colisao_com_cauda()
 
-	def check_collision_with_food(self):
-		if self.snake.body[0] == self.food.position:
-			self.food.position = self.food.generate_random_pos(self.snake.body)
-			self.snake.add_segment = True
-			self.score += 1
-			self.snake.eat_sound.play()
+	def verificar_colisao_com_comida(self):
+		if self.cobra.corpo[0] == self.comida.posicao:
+			self.comida.posicao = self.comida.gerar_posicao_aleatoria(self.cobra.corpo)
+			self.cobra.adicionar_segmento = True
+			self.pontuacao += 1
+			self.cobra.som_comer.play()
 
-	def check_collision_with_edges(self):
-		if self.snake.body[0].x == number_of_cells or self.snake.body[0].x == -1:
-			self.game_over()
-		if self.snake.body[0].y == number_of_cells or self.snake.body[0].y == -1:
-			self.game_over()
+	def verificar_colisao_com_bordas(self):
+		if self.cobra.corpo[0].x == numero_de_celulas or self.cobra.corpo[0].x == -1:
+			self.fim_de_jogo()
+		if self.cobra.corpo[0].y == numero_de_celulas or self.cobra.corpo[0].y == -1:
+			self.fim_de_jogo()
 
-	def game_over(self):
-		self.snake.reset()
-		self.food.position = self.food.generate_random_pos(self.snake.body)
-		self.state = "STOPPED"
-		self.score = 0
-		self.snake.wall_hit_sound.play()
+	def fim_de_jogo(self):
+		self.cobra.resetar()
+		self.comida.posicao = self.comida.gerar_posicao_aleatoria(self.cobra.corpo)
+		self.estado = "PARADO"
+		self.pontuacao = 0
+		self.cobra.som_bater_parede.play()
 
-	def check_collision_with_tail(self):
-		headless_body = self.snake.body[1:]
-		if self.snake.body[0] in headless_body:
-			self.game_over()
+	def verificar_colisao_com_cauda(self):
+		corpo_sem_cabeca = self.cobra.corpo[1:]
+		if self.cobra.corpo[0] in corpo_sem_cabeca:
+			self.fim_de_jogo()
 
-screen = pygame.display.set_mode((2*OFFSET + cell_size*number_of_cells, 2*OFFSET + cell_size*number_of_cells))
+screen = pygame.display.set_mode(
+	(2 * DESLOCAMENTO + tamanho_celula * numero_de_celulas,
+	 2 * DESLOCAMENTO + tamanho_celula * numero_de_celulas)
+)
 
 pygame.display.set_caption("Retro Snake")
 
 clock = pygame.time.Clock()
 
-game = Game()
-food_surface = pygame.image.load("Graphics/food.png")
+# Criar o jogo
+jogo = Jogo()
 
-SNAKE_UPDATE = pygame.USEREVENT
-pygame.time.set_timer(SNAKE_UPDATE, 200) 	
+# Carregar a sprite da comida/maçã
+superficie_comida = pygame.image.load("Graphics/food.png")
 
+ATUALIZAR_COBRA = pygame.USEREVENT
+pygame.time.set_timer(ATUALIZAR_COBRA, 200)
+
+# Loop para iniciar o jogo, movimentação da cobra e fechar o jogo
 while True:
 	for event in pygame.event.get():
-		if event.type == SNAKE_UPDATE:
-			game.update()
+		if event.type == ATUALIZAR_COBRA:
+			jogo.atualizar()
+
 		if event.type == pygame.QUIT:
 			pygame.quit()
 			sys.exit()
 
 		if event.type == pygame.KEYDOWN:
-			if game.state == "STOPPED":
-				game.state = "RUNNING"
-			if event.key == pygame.K_UP and game.snake.direction != Vector2(0, 1):
-				game.snake.direction = Vector2(0, -1)
-			if event.key == pygame.K_DOWN and game.snake.direction != Vector2(0, -1):
-				game.snake.direction = Vector2(0, 1)
-			if event.key == pygame.K_LEFT and game.snake.direction != Vector2(1, 0):
-				game.snake.direction = Vector2(-1, 0)
-			if event.key == pygame.K_RIGHT and game.snake.direction != Vector2(-1, 0):
-				game.snake.direction = Vector2(1, 0)
+			if jogo.estado == "PARADO":
+				jogo.estado = "RODANDO"
 
-	#Drawing
-	screen.fill(GREEN)
-	pygame.draw.rect(screen, DARK_GREEN, 
-		(OFFSET-5, OFFSET-5, cell_size*number_of_cells+10, cell_size*number_of_cells+10), 5)
-	game.draw()
-	title_surface = title_font.render("Retro Snake", True, DARK_GREEN)
-	score_surface = score_font.render(str(game.score), True, DARK_GREEN)
-	screen.blit(title_surface, (OFFSET-5, 20))
-	screen.blit(score_surface, (OFFSET-5, OFFSET + cell_size*number_of_cells +10))
+			if event.key == pygame.K_UP and jogo.cobra.direcao != Vector2(0, 1):
+				jogo.cobra.direcao = Vector2(0, -1)
+
+			if event.key == pygame.K_DOWN and jogo.cobra.direcao != Vector2(0, -1):
+				jogo.cobra.direcao = Vector2(0, 1)
+
+			if event.key == pygame.K_LEFT and jogo.cobra.direcao != Vector2(1, 0):
+				jogo.cobra.direcao = Vector2(-1, 0)
+
+			if event.key == pygame.K_RIGHT and jogo.cobra.direcao != Vector2(-1, 0):
+				jogo.cobra.direcao = Vector2(1, 0)
+
+	screen.fill(VERDE)
+	pygame.draw.rect(
+		screen,
+		VERDE_ESCURO,
+		(DESLOCAMENTO - 5, DESLOCAMENTO - 5, tamanho_celula * numero_de_celulas + 10, tamanho_celula * numero_de_celulas + 10),
+		5
+	)
+
+	jogo.desenhar()
+
+	superficie_titulo = fonte_titulo.render("Retro Snake", True, VERDE_ESCURO)
+	superficie_pontuacao = fonte_pontuacao.render(str(jogo.pontuacao), True, VERDE_ESCURO)
+
+	screen.blit(superficie_titulo, (DESLOCAMENTO - 5, 20))
+	screen.blit(superficie_pontuacao, (DESLOCAMENTO - 5, DESLOCAMENTO + tamanho_celula * numero_de_celulas + 10))
 
 	pygame.display.update()
 	clock.tick(60)
