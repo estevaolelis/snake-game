@@ -3,11 +3,11 @@ import pygame
 from pygame.math import Vector2
 
 class Comida:
-    def __init__(self, corpo_cobra, deslocamento, tamanho_celula, numero_de_celulas, superficie_comida):
+    def __init__(self, corpo_cobra, deslocamento, tamanho_celula, numero_de_celulas):
         self.deslocamento = deslocamento
         self.tamanho_celula = tamanho_celula
         self.numero_de_celulas = numero_de_celulas
-        self.superficie_comida = superficie_comida
+        self.superficie_comida = pygame.image.load("Graphics/food.png")
         self.posicao = self.gerar_posicao_aleatoria(corpo_cobra)
 
     def desenhar(self, screen):

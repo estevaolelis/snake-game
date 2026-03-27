@@ -2,9 +2,9 @@ from cobra import Cobra
 from comida import Comida
 
 class Jogo:
-    def __init__(self, deslocamento, tamanho_celula, numero_de_celulas, superficie_comida):
+    def __init__(self, deslocamento, tamanho_celula, numero_de_celulas):
         self.cobra = Cobra()
-        self.comida = Comida(self.cobra.corpo, deslocamento, tamanho_celula, numero_de_celulas, superficie_comida)
+        self.comida = Comida(self.cobra.corpo, deslocamento, tamanho_celula, numero_de_celulas)
         self.estado = "RODANDO"
         self.pontuacao = 0
         self.numero_de_celulas = numero_de_celulas

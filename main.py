@@ -23,9 +23,7 @@ screen = pygame.display.set_mode(
 pygame.display.set_caption("Jogo da Cobrinha")
 clock = pygame.time.Clock()
 
-superficie_comida = pygame.image.load("Graphics/food.png")
-
-jogo = Jogo(DESLOCAMENTO, tamanho_celula, numero_de_celulas, superficie_comida)
+jogo = Jogo(DESLOCAMENTO, tamanho_celula, numero_de_celulas)
 
 ATUALIZAR_COBRA = pygame.USEREVENT
 pygame.time.set_timer(ATUALIZAR_COBRA, 200)
