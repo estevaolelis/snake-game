@@ -9,6 +9,7 @@ fonte_titulo = pygame.font.Font(None, 60)
 fonte_pontuacao = pygame.font.Font(None, 40)
 
 VERDE = (173, 204, 96)
+VERDE_CLARO = (167, 197, 92)
 VERDE_ESCURO = (43, 51, 24)
 
 tamanho_celula = 30
@@ -55,6 +56,17 @@ while True:
 
     screen.fill(VERDE)
 
+    for linha in range(numero_de_celulas):
+        for coluna in range(numero_de_celulas):
+            if (linha + coluna) % 2 == 0:
+                retangulo_xadrez = pygame.Rect(
+                    DESLOCAMENTO + coluna * tamanho_celula, 
+                    DESLOCAMENTO + linha * tamanho_celula, 
+                    tamanho_celula, 
+                    tamanho_celula
+                )
+                pygame.draw.rect(screen, VERDE_CLARO, retangulo_xadrez)
+
     pygame.draw.rect(
         screen,
         VERDE_ESCURO,
@@ -65,10 +77,12 @@ while True:
     jogo.desenhar(screen, DESLOCAMENTO, tamanho_celula, VERDE_ESCURO)
 
     superficie_titulo = fonte_titulo.render("Jogo da Cobrinha", True, VERDE_ESCURO)
-    superficie_pontuacao = fonte_pontuacao.render(str(jogo.pontuacao), True, VERDE_ESCURO)
+    texto_pontuacao = f"Pontuação: {jogo.pontuacao}"
+    superficie_pontuacao = fonte_pontuacao.render(texto_pontuacao, True, VERDE_ESCURO)
 
     screen.blit(superficie_titulo, (DESLOCAMENTO - 5, 20))
-    screen.blit(superficie_pontuacao, (DESLOCAMENTO - 5, DESLOCAMENTO + tamanho_celula * numero_de_celulas + 10))
+    pos_x_pontuacao = (DESLOCAMENTO + tamanho_celula * numero_de_celulas) - superficie_pontuacao.get_width()
+    screen.blit(superficie_pontuacao, (pos_x_pontuacao, 30))
 
     pygame.display.update()
     clock.tick(60)
