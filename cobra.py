@@ -10,14 +10,19 @@ class Cobra:
         self.som_bater_parede = pygame.mixer.Sound("Sounds/wall.mp3")
 
     def desenhar(self, screen, deslocamento, tamanho_celula, cor):
-        for segmento in self.corpo:
+        for indice, segmento in enumerate(self.corpo):
             retangulo_segmento = (
                 deslocamento + segmento.x * tamanho_celula,
                 deslocamento + segmento.y * tamanho_celula,
                 tamanho_celula,
                 tamanho_celula
             )
-            pygame.draw.rect(screen, cor, retangulo_segmento, 0, 7)
+            
+            if indice == 0:
+                cor_cabeca = (53, 61, 34)
+                pygame.draw.rect(screen, cor_cabeca, retangulo_segmento, 0, 12) 
+            else:
+                pygame.draw.rect(screen, cor, retangulo_segmento, 0, 7)
 
     def atualizar(self):
         self.corpo.insert(0, self.corpo[0] + self.direcao)
