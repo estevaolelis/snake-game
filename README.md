@@ -90,8 +90,7 @@ Qualquer tecla de direção também inicia a partida quando o jogo estiver parad
 ## Ideias futuras
 
 - adicionar alimentos diferentes da maçã, como itens que dão dano ou aumentam a velocidade;
-- criar troca de fase com mudança de cores e de itens;
-- expandir o mapa ou criar novos cenários.
+- criar troca de fase com mudança de cores e de itens; 
 
 ## Observações
 
