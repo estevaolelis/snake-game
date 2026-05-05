@@ -8,8 +8,6 @@ pygame.init()
 fonte_titulo = pygame.font.Font(None, 60)
 fonte_pontuacao = pygame.font.Font(None, 40)
 
-VERDE = (173, 204, 96)
-VERDE_CLARO = (167, 197, 92)
 VERDE_ESCURO = (43, 51, 24)
 
 tamanho_celula = 30
@@ -54,7 +52,14 @@ while True:
             if event.key == pygame.K_RIGHT and jogo.cobra.direcao != Vector2(-1, 0):
                 jogo.cobra.direcao = Vector2(1, 0)
 
-    screen.fill(VERDE)
+    cor_fase = jogo.cores_fases[jogo.fase_atual % len(jogo.cores_fases)]
+    screen.fill(cor_fase)
+
+    cor_xadrez = (
+        max(0, cor_fase[0] - 10),
+        max(0, cor_fase[1] - 10),
+        max(0, cor_fase[2] - 10)
+    )
 
     for linha in range(numero_de_celulas):
         for coluna in range(numero_de_celulas):
@@ -65,7 +70,7 @@ while True:
                     tamanho_celula, 
                     tamanho_celula
                 )
-                pygame.draw.rect(screen, VERDE_CLARO, retangulo_xadrez)
+                pygame.draw.rect(screen, cor_xadrez, retangulo_xadrez)
 
     pygame.draw.rect(
         screen,
