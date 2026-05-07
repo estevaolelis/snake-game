@@ -6,8 +6,8 @@ class Cobra:
         self.corpo = [Vector2(6, 9), Vector2(5, 9), Vector2(4, 9)]
         self.direcao = Vector2(1, 0)
         self.adicionar_segmento = False
-        self.imagem_cabeca = pygame.image.load("graphics/Snake_Head.png").convert_alpha()
-        self.imagem_corpo = pygame.image.load("graphics/Snake_Body_Outlined.png").convert_alpha()
+        self.imagem_cabeca = pygame.image.load("Graphics/Snake_Head.png").convert_alpha()
+        self.imagem_corpo = pygame.image.load("Graphics/Snake_Body_Outlined.png").convert_alpha()
         self.imagem_cabeca = pygame.transform.scale(self.imagem_cabeca, (tamanho_celula, tamanho_celula))
         self.imagem_corpo = pygame.transform.scale(self.imagem_corpo, (tamanho_celula, tamanho_celula))
         self.som_comer = pygame.mixer.Sound("Sounds/PowerUp2.wav")

@@ -27,40 +27,90 @@ https://www.python.org/downloads/
 
 Durante a instalação, marque a opção para adicionar o Python ao `PATH`.
 
-### Instalação do pygame-ce
+### Instalação de dependências no Linux
+
+#### 1. Criar o ambiente virtual
 
 No terminal, dentro da pasta do projeto, execute:
 
 ```bash
-python -m pip install pygame-ce
+python3 -m venv venv
 ```
 
-Se o seu sistema usar mais de uma versão do Python, você também pode instalar assim:
+#### 2. Ativar o ambiente virtual
 
 ```bash
-py -3.14 -m pip install pygame-ce
+source venv/bin/activate
 ```
 
-Se quiser remover a versão antiga do pacote, use:
+Após ativar, você verá o nome do ambiente (`venv`) entre parênteses no início da linha do terminal.
+
+#### 3. Instalar as dependências
+
+Com o ambiente virtual ativado, instale todas as dependências usando o arquivo `requirements.txt`:
 
 ```bash
-python -m pip uninstall pygame
+pip install -r requirements.txt
+```
+
+#### Para desativar o ambiente
+
+Quando terminar de trabalhar, desative o ambiente com:
+
+```bash
+deactivate
+```
+
+> O `pygame-ce` mantém compatibilidade com `import pygame`, então o código do jogo continua usando `pygame` normalmente.
+
+### Instalação de dependências no Windows
+
+#### 1. Criar o ambiente virtual
+
+No PowerShell ou Prompt de Comando, dentro da pasta do projeto, execute:
+
+```bash
+python -m venv venv
+```
+
+#### 2. Ativar o ambiente virtual
+
+**PowerShell:**
+```bash
+venv\Scripts\Activate.ps1
+```
+
+**Prompt de Comando (cmd):**
+```bash
+venv\Scripts\activate.bat
+```
+
+Após ativar, você verá o nome do ambiente (`venv`) entre parênteses no início da linha.
+
+#### 3. Instalar as dependências
+
+Com o ambiente virtual ativado, instale todas as dependências usando o arquivo `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+#### Para desativar o ambiente
+
+Quando terminar de trabalhar, desative o ambiente com:
+
+```bash
+deactivate
 ```
 
 > O `pygame-ce` mantém compatibilidade com `import pygame`, então o código do jogo continua usando `pygame` normalmente.
 
 ## Como executar
 
-Depois de instalar a dependência, rode o jogo com:
+Com o ambiente virtual **ativado**, rode o jogo com:
 
 ```bash
 python main.py
-```
-
-Se necessário, use o Python 3.14 explicitamente:
-
-```bash
-py -3.14 main.py
 ```
 
 ## Controles
