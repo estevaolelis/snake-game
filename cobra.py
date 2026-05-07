@@ -43,3 +43,9 @@ class Cobra:
     def resetar(self):
         self.corpo = [Vector2(6, 9), Vector2(5, 9), Vector2(4, 9)]
         self.direcao = Vector2(1, 0)
+
+    def teletransportar(self, nova_posicao):
+        deslocamento = nova_posicao - self.corpo[0]
+    
+        for i in range(len(self.corpo)):
+            self.corpo[i] = self.corpo[i] + deslocamento
