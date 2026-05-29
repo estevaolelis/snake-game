@@ -3,6 +3,11 @@ from pygame.math import Vector2
 
 class Cobra:
     def __init__(self, tamanho_celula):
+        """Inicializa a cobra com imagens, sons e posição padrão.
+
+        Args:
+            tamanho_celula: tamanho em pixels usado para redimensionar as imagens da cobra.
+        """
         self.corpo = [Vector2(6, 9), Vector2(5, 9), Vector2(4, 9)]
         self.direcao = Vector2(1, 0)
         self.adicionar_segmento = False
@@ -20,6 +25,14 @@ class Cobra:
         }
 
     def desenhar(self, screen, deslocamento, tamanho_celula, cor):
+        """Desenha a cobra na tela, rotacionando a cabeça conforme direção.
+
+        Args:
+            screen: superfície Pygame onde desenhar.
+            deslocamento: margem usada para posicionamento.
+            tamanho_celula: tamanho em pixels de cada célula.
+            cor: cor opcional (não usada diretamente aqui).
+        """
         for indice, segmento in enumerate(self.corpo):
             pos_x = deslocamento + segmento.x * tamanho_celula
             pos_y = deslocamento + segmento.y * tamanho_celula
@@ -34,6 +47,10 @@ class Cobra:
                 screen.blit(self.imagem_corpo, (pos_x, pos_y))
 
     def atualizar(self):
+        """Move a cobra na direção atual e gerencia o crescimento.
+
+        Insere uma nova cabeça e remove a cauda a menos que `adicionar_segmento` seja True.
+        """
         self.corpo.insert(0, self.corpo[0] + self.direcao)
         if self.adicionar_segmento:
             self.adicionar_segmento = False
@@ -41,10 +58,16 @@ class Cobra:
             self.corpo = self.corpo[:-1]
 
     def resetar(self):
+        """Reseta a posição e direção da cobra ao estado inicial."""
         self.corpo = [Vector2(6, 9), Vector2(5, 9), Vector2(4, 9)]
         self.direcao = Vector2(1, 0)
 
     def teletransportar(self, nova_posicao):
+        """Teletransporta a cobra por um deslocamento preservando sua forma.
+
+        Args:
+            nova_posicao: `Vector2` target para a nova posição da cabeça.
+        """
         deslocamento = nova_posicao - self.corpo[0]
     
         for i in range(len(self.corpo)):
