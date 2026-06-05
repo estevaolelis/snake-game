@@ -1,6 +1,7 @@
 import random
 import pygame
 from pygame.math import Vector2
+import random
 
 class ComidaPodre:
     def __init__(self, corpo_cobra, posicao_comida_boa, posicoes_comidas_podres, deslocamento, tamanho_celula, numero_de_celulas):
@@ -17,22 +18,33 @@ class ComidaPodre:
         self.deslocamento = deslocamento
         self.tamanho_celula = tamanho_celula
         self.numero_de_celulas = numero_de_celulas
-        #self.superficie_comida = pygame.image.load("Graphics/poison.png")
+        
+        opcoes_de_imagem = [
+            "Graphics/poison1.png",
+            "Graphics/poison2.png",
+            "Graphics/poison3.png"
+        ]
+        
+        imagem_sorteada = random.choice(opcoes_de_imagem)
+        
+        imagem_original = pygame.image.load(imagem_sorteada).convert_alpha()
+        
+        self.superficie_comida = pygame.transform.scale(imagem_original, (32, 32))
+        
         self.posicao = self.gerar_posicao_aleatoria(corpo_cobra, posicao_comida_boa, posicoes_comidas_podres)
 
     def desenhar(self, screen):
-        """Desenha um quadrado roxo temporário na tela para representar a comida podre.
+        """Desenha a imagem da comida podre na tela.
 
         Args:
             screen: superfície Pygame onde o elemento será renderizado.
         """
-        retangulo_comida = pygame.Rect(
-            self.deslocamento + self.posicao.x * self.tamanho_celula,
-            self.deslocamento + self.posicao.y * self.tamanho_celula,
-            self.tamanho_celula,
-            self.tamanho_celula
-        )
-        pygame.draw.rect(screen, (255, 0, 255), retangulo_comida)
+        pos_x = self.deslocamento + self.posicao.x * self.tamanho_celula
+        pos_y = self.deslocamento + self.posicao.y * self.tamanho_celula
+        
+        retangulo_comida = pygame.Rect(pos_x, pos_y, self.tamanho_celula, self.tamanho_celula)
+        
+        screen.blit(self.superficie_comida, retangulo_comida)
 
     def gerar_celula_aleatoria(self):
         """Gera uma coordenada Vector2 aleatória dentro dos limites do tabuleiro.

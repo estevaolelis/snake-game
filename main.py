@@ -3,6 +3,7 @@ import sys
 from pygame.math import Vector2
 from jogo import Jogo
 from tela import Tela
+from menu import MenuPrincipal
 
 pygame.init()
 
@@ -17,7 +18,9 @@ screen = pygame.display.set_mode(
      2 * DESLOCAMENTO + tamanho_celula * numero_de_celulas)
 )
 
-pygame.display.set_caption("Jogo da Cobrinha")
+pygame.display.set_caption("Snake Elite")
+menu = MenuPrincipal(screen)
+menu.executar()
 clock = pygame.time.Clock()
 
 jogo = Jogo(DESLOCAMENTO, tamanho_celula, numero_de_celulas)

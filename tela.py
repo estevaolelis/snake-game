@@ -67,7 +67,7 @@ class Tela:
 
         jogo.desenhar(self.screen, self.deslocamento, self.tamanho_celula, self.cor_borda)
 
-        superficie_titulo = self.fonte_titulo.render("Jogo da Cobrinha", True, self.cor_borda)
+        superficie_titulo = self.fonte_titulo.render("Snake Elite", True, self.cor_borda)
         
         texto_pontuacao = f"Pontuação: {jogo.pontuacao}"
         superficie_pontuacao = self.fonte_pontuacao.render(texto_pontuacao, True, self.cor_borda)
