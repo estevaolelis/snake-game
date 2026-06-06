@@ -4,6 +4,7 @@ from comida import Comida
 from buraco import Buraco
 from comida_podre import ComidaPodre
 from pygame.math import Vector2
+from recordes import GerenciadorRecordes
 
 class Jogo:
     def __init__(self, deslocamento, tamanho_celula, numero_de_celulas):
@@ -31,6 +32,8 @@ class Jogo:
             (106, 13, 173)
         ]
         self.comida.posicao = self._gerar_posicao_livre()
+        self.gerenciador_recordes = GerenciadorRecordes()
+        self.nome_input = ""
 
     def desenhar(self, screen, deslocamento, tamanho_celula, cor_corpo):
         """Desenha os elementos do jogo (comidas, buraco e cobra) na `screen`.
@@ -92,10 +95,9 @@ class Jogo:
             return
 
     def verificar_colisao_com_comida_podre(self):
-        """Verifica se a cobra colidiu com a comida podre e reinicia o jogo."""
+        """Verifica se a cobra colidiu com a comida podre."""
         if any(self.cobra.corpo[0] == comida_podre.posicao for comida_podre in self.comidas_podres):
-            self.reiniciar_jogo()
-            return
+            self.acionar_game_over()
 
     def reiniciar_jogo(self):
         """Volta o jogo para o estado inicial, mantendo o fluxo de início por tecla."""
@@ -108,6 +110,11 @@ class Jogo:
         self.estado = "PARADO"
         self.comida.posicao = self._gerar_posicao_livre()
         pygame.time.set_timer(pygame.USEREVENT, self.intervalo_atualizacao)
+        
+    def acionar_game_over(self):
+        """Muda o estado do jogo e prepara a entrada de texto do jogador."""
+        self.estado = "GAME_OVER"
+        self.nome_input = ""
 
     def verificar_colisao_com_buraco(self):
         """Verifica se a cobra entrou no buraco e teletransporta para a nova fase.
@@ -180,19 +187,19 @@ class Jogo:
     def verificar_colisao_com_bordas(self):
         """Verifica se a cabeça da cobra saiu dos limites do tabuleiro."""
         if self.cobra.corpo[0].x == self.numero_de_celulas or self.cobra.corpo[0].x == -1:
-            self.reiniciar_jogo()
+            self.acionar_game_over()
         elif self.cobra.corpo[0].y == self.numero_de_celulas or self.cobra.corpo[0].y == -1:
-            self.reiniciar_jogo()
+            self.acionar_game_over()
 
     def verificar_colisao_com_cauda(self):
         """Verifica se a cabeça colidiu com a própria cauda."""
         corpo_sem_cabeca = self.cobra.corpo[1:]
         if self.cobra.corpo[0] in corpo_sem_cabeca:
-            self.reiniciar_jogo()
+            self.acionar_game_over()
 
     def fim_de_jogo(self):
-        """Mantém compatibilidade com a versão anterior e reinicia o jogo."""
-        self.reiniciar_jogo()
+        """Mantém compatibilidade com a versão anterior e aciona o game over."""
+        self.acionar_game_over()
 
     def _posicao_ocupada(self, posicao, posicoes_ignoradas=None):
         """Retorna True quando a posição já está ocupada por cobra, frutas ou elementos especiais."""

@@ -2,29 +2,25 @@ import pygame
 
 class Tela:
     def __init__(self, screen, tamanho_celula, numero_de_celulas, deslocamento, cor_borda):
-        """Inicializa a tela do jogo.
-
-        Args:
-            screen: superfície Pygame onde será desenhado o jogo.
-            tamanho_celula: tamanho em pixels de cada célula do tabuleiro.
-            numero_de_celulas: número de células por linha/coluna.
-            deslocamento: margem em pixels entre a borda da janela e o tabuleiro.
-            cor_borda: cor da borda e dos textos (tupla RGB).
-        """
+        """Inicializa a tela do jogo e carrega as fontes arcade."""
         self.screen = screen
         self.tamanho_celula = tamanho_celula
         self.numero_de_celulas = numero_de_celulas
         self.deslocamento = deslocamento
         self.cor_borda = cor_borda
-        self.fonte_titulo = pygame.font.Font(None, 60)
-        self.fonte_pontuacao = pygame.font.Font(None, 40)
+        
+        caminho_fonte = "Graphics/arcade.ttf"
+        try:
+            self.fonte_titulo = pygame.font.Font(caminho_fonte, 60)
+            self.fonte_pontuacao = pygame.font.Font(caminho_fonte, 40)
+            self.caminho_fonte_popup = caminho_fonte
+        except FileNotFoundError:
+            self.fonte_titulo = pygame.font.Font(None, 60)
+            self.fonte_pontuacao = pygame.font.Font(None, 40)
+            self.caminho_fonte_popup = None
 
     def desenhar_tabuleiro(self, cor_fase):
-        """Desenha o tabuleiro quadriculado preenchendo o fundo com a cor da fase.
-
-        Args:
-            cor_fase: cor de fundo da fase (tupla RGB).
-        """
+        """Desenha o tabuleiro quadriculado preenchendo o fundo com a cor da fase."""
         self.screen.fill(cor_fase)
 
         cor_xadrez = (
@@ -45,11 +41,7 @@ class Tela:
                     pygame.draw.rect(self.screen, cor_xadrez, retangulo_xadrez)
 
     def desenhar(self, jogo):
-        """Desenha toda a tela do jogo incluindo tabuleiro, borda e HUD.
-
-        Args:
-            jogo: instância de `Jogo` contendo estado, pontuação e objetos para desenhar.
-        """
+        """Desenha toda a tela do jogo incluindo tabuleiro, borda e HUD."""
         cor_fase = jogo.cores_fases[jogo.fase_atual % len(jogo.cores_fases)]
         self.desenhar_tabuleiro(cor_fase)
 
@@ -64,15 +56,65 @@ class Tela:
             ),
             5,
         )
-
+        
         jogo.desenhar(self.screen, self.deslocamento, self.tamanho_celula, self.cor_borda)
 
         superficie_titulo = self.fonte_titulo.render("Snake Elite", True, self.cor_borda)
         
-        texto_pontuacao = f"Pontuação: {jogo.pontuacao}"
+        texto_pontuacao = f"Pontuacao: {jogo.pontuacao}"
         superficie_pontuacao = self.fonte_pontuacao.render(texto_pontuacao, True, self.cor_borda)
         
         self.screen.blit(superficie_titulo, (self.deslocamento - 5, 25))
         canto_direito = (self.deslocamento + self.tamanho_celula * self.numero_de_celulas)
         pos_x_pontuacao = canto_direito - superficie_pontuacao.get_width()
-        self.screen.blit(superficie_pontuacao, (pos_x_pontuacao, 15))
+        self.screen.blit(superficie_pontuacao, (pos_x_pontuacao, 25))
+        
+        if jogo.estado == "GAME_OVER":
+            self.desenhar_popup_recordes(jogo)
+        
+    def desenhar_popup_recordes(self, jogo):
+        """Desenha a tela de fim de jogo e o placar de recordes por cima do tabuleiro."""
+        camada_escura = pygame.Surface((self.screen.get_width(), self.screen.get_height()), pygame.SRCALPHA)
+        camada_escura.fill((0, 0, 0, 210)) # Aumentei um pouco a escuridão para a fonte neon destacar mais
+        self.screen.blit(camada_escura, (0, 0))
+
+        try:
+            fonte_titulo = pygame.font.Font(self.caminho_fonte_popup, 74)
+            fonte_normal = pygame.font.Font(self.caminho_fonte_popup, 40)
+        except (FileNotFoundError, TypeError):
+            fonte_titulo = pygame.font.Font(None, 74)
+            fonte_normal = pygame.font.Font(None, 40)
+        
+        centro_x = self.screen.get_width() // 2
+        
+        texto_game_over = fonte_titulo.render("GAME OVER!", True, (255, 80, 80))
+        retangulo_titulo = texto_game_over.get_rect(center=(centro_x, 150))
+        self.screen.blit(texto_game_over, retangulo_titulo)
+
+        y_offset = 260
+        texto_recordes = fonte_normal.render("*** MAIORES PONTUACOES ***", True, (255, 215, 0))
+        retangulo_recordes = texto_recordes.get_rect(center=(centro_x, y_offset))
+        self.screen.blit(texto_recordes, retangulo_recordes)
+        
+        y_offset += 70
+        for i, recorde in enumerate(jogo.gerenciador_recordes.recordes):
+            linha = f"{i + 1} . {recorde['nome']} ...... {recorde['pontuacao']}"
+            texto_linha = fonte_normal.render(linha, True, (255, 255, 255))
+            retangulo_linha = texto_linha.get_rect(center=(centro_x, y_offset))
+            self.screen.blit(texto_linha, retangulo_linha)
+            y_offset += 50
+
+        if jogo.gerenciador_recordes.eh_novo_recorde(jogo.pontuacao):
+            texto_aviso = fonte_normal.render("NOVO RECORDE! Digite 3 letras:", True, (100, 255, 100))
+            retangulo_aviso = texto_aviso.get_rect(center=(centro_x, y_offset + 50))
+            self.screen.blit(texto_aviso, retangulo_aviso)
+            
+            tempo = pygame.time.get_ticks()
+            cursor = "_" if tempo % 1000 < 500 else " "
+            texto_nome = fonte_titulo.render(jogo.nome_input + cursor, True, (255, 255, 255))
+            retangulo_nome = texto_nome.get_rect(center=(centro_x, y_offset + 120))
+            self.screen.blit(texto_nome, retangulo_nome)
+        else:
+            texto_aviso = fonte_normal.render("Aperte ENTER para tentar de novo", True, (200, 200, 200))
+            retangulo_aviso = texto_aviso.get_rect(center=(centro_x, y_offset + 80))
+            self.screen.blit(texto_aviso, retangulo_aviso)
