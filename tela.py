@@ -105,7 +105,7 @@ class Tela:
             y_offset += 50
 
         if jogo.gerenciador_recordes.eh_novo_recorde(jogo.pontuacao):
-            texto_aviso = fonte_normal.render("NOVO RECORDE! Digite 3 letras:", True, (100, 255, 100))
+            texto_aviso = fonte_normal.render("NOVO RECORDE! Digite seu nickname:", True, (100, 255, 100))
             retangulo_aviso = texto_aviso.get_rect(center=(centro_x, y_offset + 50))
             self.screen.blit(texto_aviso, retangulo_aviso)
             
