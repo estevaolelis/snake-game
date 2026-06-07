@@ -32,7 +32,7 @@ class MenuPrincipal:
         self.imagem_atual = self.imagem_botao_padrao
 
         pos_x = (self.largura - self.imagem_botao_padrao.get_width()) // 2
-        pos_y = (self.altura - self.imagem_botao_padrao.get_height()) // 2
+        pos_y = (self.altura - self.imagem_botao_padrao.get_height()) // 2 - 30
         self.rect_botao = self.imagem_botao_padrao.get_rect(topleft=(pos_x, pos_y))
 
     def desenhar(self):
