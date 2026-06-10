@@ -7,6 +7,12 @@ from menu import MenuPrincipal
 
 pygame.init()
 
+pygame.mixer.music.load("Sounds/trilha.mp3")
+
+pygame.mixer.music.set_volume(0.4)
+
+pygame.mixer.music.play(-1)
+
 VERDE_ESCURO = (43, 51, 24)
 
 tamanho_celula = 30

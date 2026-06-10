@@ -4,6 +4,10 @@
         "pontuacao": 21
     },
     {
+        "nome": "NEY",
+        "pontuacao": 20
+    },
+    {
         "nome": "GLF",
         "pontuacao": 17
     },
@@ -14,9 +18,5 @@
     {
         "nome": "BAH",
         "pontuacao": 10
-    },
-    {
-        "nome": "AAA",
-        "pontuacao": 0
     }
 ]

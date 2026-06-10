@@ -187,8 +187,10 @@ class Jogo:
     def verificar_colisao_com_bordas(self):
         """Verifica se a cabeça da cobra saiu dos limites do tabuleiro."""
         if self.cobra.corpo[0].x == self.numero_de_celulas or self.cobra.corpo[0].x == -1:
+            self.cobra.som_bater_parede.play()
             self.acionar_game_over()
         elif self.cobra.corpo[0].y == self.numero_de_celulas or self.cobra.corpo[0].y == -1:
+            self.cobra.som_bater_parede.play()
             self.acionar_game_over()
 
     def verificar_colisao_com_cauda(self):
