@@ -75,17 +75,16 @@ class Jogo:
             self.cobra.som_comer.play()
 
             self.comida.posicao = self._gerar_posicao_livre()
-            if self.fase_atual >= 1:
-                self.comidas_podres.append(
-                    ComidaPodre(
-                        self.cobra.corpo,
-                        self.comida.posicao,
-                        [comida_podre.posicao for comida_podre in self.comidas_podres],
-                        self.comida.deslocamento,
-                        self.comida.tamanho_celula,
-                        self.numero_de_celulas,
-                    )
+            self.comidas_podres.append(
+                ComidaPodre(
+                    self.cobra.corpo,
+                    self.comida.posicao,
+                    [comida_podre.posicao for comida_podre in self.comidas_podres],
+                    self.comida.deslocamento,
+                    self.comida.tamanho_celula,
+                    self.numero_de_celulas,
                 )
+            )
 
             if self.pontuacao % self.meta_pontos == 0 and not self.buraco:
                 self.buraco = Buraco(self.cobra.corpo, self.numero_de_celulas)

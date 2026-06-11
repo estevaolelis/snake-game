@@ -1,5 +1,9 @@
 [
     {
+        "nome": "EST",
+        "pontuacao": 50
+    },
+    {
         "nome": "JOE",
         "pontuacao": 22
     },
@@ -14,9 +18,5 @@
     {
         "nome": "NEY",
         "pontuacao": 20
-    },
-    {
-        "nome": "GLF",
-        "pontuacao": 17
     }
 ]
