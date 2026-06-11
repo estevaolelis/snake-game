@@ -1,5 +1,13 @@
 [
     {
+        "nome": "JOE",
+        "pontuacao": 22
+    },
+    {
+        "nome": "CRI",
+        "pontuacao": 22
+    },
+    {
         "nome": "BAH",
         "pontuacao": 21
     },
@@ -10,13 +18,5 @@
     {
         "nome": "GLF",
         "pontuacao": 17
-    },
-    {
-        "nome": "LBC",
-        "pontuacao": 14
-    },
-    {
-        "nome": "BAH",
-        "pontuacao": 10
     }
 ]
