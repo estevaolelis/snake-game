@@ -72,7 +72,6 @@ class Jogo:
             self.cobra.som_comer.play()
 
             self.comida.posicao = self._gerar_posicao_livre()
-            # somente gera comidas podres a partir da fase 1
             if self.fase_atual >= 1:
                 self.comidas_podres.append(
                     ComidaPodre(
