@@ -95,6 +95,7 @@ class Jogo:
     def verificar_colisao_com_comida_podre(self):
         """Verifica se a cobra colidiu com a comida podre."""
         if any(self.cobra.corpo[0] == comida_podre.posicao for comida_podre in self.comidas_podres):
+            self.cobra.som_comida_podre.play()
             self.acionar_game_over()
 
     def reiniciar_jogo(self):

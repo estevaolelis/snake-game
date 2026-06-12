@@ -17,6 +17,7 @@ class Cobra:
         self.imagem_corpo = pygame.transform.scale(self.imagem_corpo, (tamanho_celula, tamanho_celula))
         self.som_comer = pygame.mixer.Sound("Sounds/PowerUp2.wav")
         self.som_bater_parede = pygame.mixer.Sound("Sounds/wall.mp3")
+        self.som_comida_podre = pygame.mixer.Sound("Sounds/podre.mp3")
         self.rotacoes = {
             (1, 0): -90,
             (-1, 0): 90,
