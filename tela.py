@@ -75,7 +75,7 @@ class Tela:
     def desenhar_popup_recordes(self, jogo):
         """Desenha a tela de fim de jogo e o placar de recordes por cima do tabuleiro."""
         camada_escura = pygame.Surface((self.screen.get_width(), self.screen.get_height()), pygame.SRCALPHA)
-        camada_escura.fill((0, 0, 0, 210)) # Aumentei um pouco a escuridão para a fonte neon destacar mais
+        camada_escura.fill((0, 0, 0, 210))
         self.screen.blit(camada_escura, (0, 0))
 
         try:
